@@ -7,6 +7,7 @@ Crawl4AI FastAPI entry‑point
 """
 
 # ── stdlib & 3rd‑party imports ───────────────────────────────
+from fastapi.encoders import jsonable_encoder
 from crawler_pool import get_crawler, close_all, janitor
 from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig
 from auth import create_access_token, get_token_dependency, TokenRequest
@@ -595,7 +596,7 @@ async def get_context(
             {"text": sections[i], "score": scores_d[i]} for i in valid
         ]
 
-    return JSONResponse(results)
+    return JSONResponse(content=jsonable_encoder(results))
 
 
 # attach MCP layer (adds /mcp/ws, /mcp/sse, /mcp/schema)
